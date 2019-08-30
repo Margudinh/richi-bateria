@@ -1,0 +1,44 @@
+{% extends "master.html" %}
+
+{% block header %}
+<style>
+    td img {
+        max-width: 50px;
+        max-height: 50px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container z-depth-3 blue-grey darken-1 ">
+    <table class = "table-responsive">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td><img src="{{product.img}}" alt="{{product.title}}"></td>
+                <td>{{product.title}}</td>
+                <td>${{product.price}} MXN</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="2">Total</th>
+                <th>${{total}} MXN</th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <form action="/checkout" method = "post" class = "center">
+        <button type = "submit" class = "btn blue"><i class = "fab fa-paypal left"></i> Pagar con PayPal</button>
+    </form>
+</div>
+{% endblock %}
