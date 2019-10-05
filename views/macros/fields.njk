@@ -1,0 +1,11 @@
+{% macro field(name, label, type = 'text', cols = 's12', error = '', value = '') %}
+    <div class="input-field col {{ cols }}">
+        {% if error %}
+            <input id="{{ name }}" type="{{ type }}" name="{{ name }}" value = '{{ value }}' class="validate invalid" />
+        {% else %}
+            <input id="{{ name }}" type="{{ type }}" name="{{ name }}" value = '{{ value }}' class="validate"/>
+        {% endif %}
+        <label for="{{ name }}" class="white-text">{{ label }}</label>
+        <span class="helper-text" data-error="{{error}}" data-success=""></span>
+    </div>
+{% endmacro %}

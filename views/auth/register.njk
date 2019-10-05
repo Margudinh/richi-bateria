@@ -1,0 +1,36 @@
+{% import "../macros/fields.njk" as fields %}
+
+{% extends "master.html" %}
+
+{% block header %}
+    <link rel="stylesheet" href="/css/forms.css" />
+{% endblock %}
+
+{% block content %}
+<div class="container z-depth-3 blue-grey darken-1">
+    <div class="row">
+        <form method="post" class="col 12 m6 blue-grey darken-1 ">
+            <div class="row">
+                {{ fields.field('firstName', 'Nombres', cols = 's12 m6', error = errors.firstName.msg, value = body.firstName ) }}
+                {{ fields.field('lastName', 'Apellidos', cols = 's12 m6', error = errors.lastName.msg, value = body.lastName ) }}
+            </div>
+
+            <div class="row">
+                {{ fields.field('email', 'Correo', type = 'email', error = errors.email.msg, value = body.email) }}
+            </div>
+
+            <div class="row">
+                {{ fields.field('password', 'Contraseña', type = 'password', cols = 's12 m6', error = errors.password.msg) }}
+                {{ fields.field('password2', 'Repetir Contraseña', type = 'password', cols = 's12 m6', error = errors.password2.msg) }}
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12 center">
+                    <button class="btn blue-grey darken-4" type="submit">Crear cuenta</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

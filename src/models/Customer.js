@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity} from "typeorm";
 
 @Entity()
-export class Customer{
+export class Customer extends BaseEntity {
     @PrimaryGeneratedColumn()
     id = undefined;
 
@@ -11,9 +11,12 @@ export class Customer{
     @Column({type: "varchar", nullable: false})
     lastName = "";
 
-    @Column("varchar")
+    @Column({type: "varchar", nullable: false, unique: true})
     email = "";
 
-    @Column("varchar")
+    @Column({type: "varchar", nullable: false})
     password = "";
+
+    @Column({type: "bigint", nullable: true})
+    phone = undefined;
 }

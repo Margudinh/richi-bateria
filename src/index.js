@@ -6,6 +6,8 @@ import * as path from 'path';
 import session from 'express-session';
 import * as fs from 'fs';
 import * as paypal from 'paypal-rest-sdk';
+import { Product } from './models/Product';
+import auth from './routes/auth';
 
 // setting up paypal stuff refactor this later
 const PAYPAL_SECRET = fs.readFileSync(path.join(__dirname, '../paypal.secret.key')).toString();
@@ -20,25 +22,15 @@ paypal.configure({
 // create express instance
 const app = express();
 
-const products = [
-    {
-        title: "Food 1",
-        description: "lorem asdasdajsd alkjsdlakdsj askdljadj salkjsdlkads",
-        img: "http://lorempixel.com/300/300/food/",
-        price: 20.00
-    },{
-        title: "Food 2",
-        description: "lorem ipsum dolor sit amet",
-        img: "http://lorempixel.com/300/300/food/",
-        price: 30.00
-    }
-];
-
 // setup engine
 nunjucks.configure( path.join(__dirname, '../views') ,{
     express: app,
     watch: true,
+    
 });
+
+// static files
+app.use(express.static('public'));
 
 // setup express middleware
 app.use(bodyParser.urlencoded({extended: false}));
@@ -53,13 +45,18 @@ app.use((req, res, next) =>{
     res.locals.title = 'Hey there';
     res.locals.isLoggedIn = req.session.isLoggedIn;
     next();
-})
+});
+
+
+app.use("/", auth);
 
 app.get('/', (req, res) => {
     res.render('index.html');
 });
 
-app.get('/productos', (req, res) => {
+app.get('/productos', async (req, res) => {
+
+    const products = await Product.find();
     res.render('productos.html',{products: products});
 });
 
@@ -74,7 +71,6 @@ app.get('/checkout', (req,res) => {
 });
 
 app.post('/checkout', (req, res) => {
-    
     // getting the total
     let total = 0;
     for(let p of products){
